@@ -12,12 +12,4 @@ export class UserService {
     return this.users.find(user => user.username === username);
   }
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.findByUsername(username);
-    if (user && await bcrypt.compare(password, user.password)) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
 }

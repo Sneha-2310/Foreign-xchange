@@ -19,8 +19,16 @@ constructor(private readonly authService:AuthService){}
 
   @Get('admin')
   @UseGuards(AuthGuard("jwt"),new RolesGuard(CONSTANTS.ROLES.ADMIN))
-  web(@Request()req): string {
-    //authentication done
+  yyy(@Request()req): string {
+    //authorization done
+    console.log(req.user);
     return "Access To Admin Only";
+  }
+  @Get('user')
+  @UseGuards(AuthGuard("jwt"),new RolesGuard(CONSTANTS.ROLES.USER))
+  xxx(@Request()req): string {
+    //authorization done
+    console.log(req.user);
+    return "Access To User Only";
   }
 }

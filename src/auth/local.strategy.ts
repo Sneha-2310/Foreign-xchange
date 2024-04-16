@@ -1,4 +1,3 @@
-
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
@@ -18,5 +17,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     }
     if(user!= undefined && user.password==password){
     return user;}
+    else {throw new UnauthorizedException();}
   }
 }

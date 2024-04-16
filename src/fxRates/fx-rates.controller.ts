@@ -7,7 +7,7 @@ export class FxRatesController {
   constructor(private readonly fxRatesService: FxRatesService) {}
  
   @Get()
-  @UseGuards(AuthGuard("local"))
+  @UseGuards(AuthGuard("jwt"))
   async getFxRates(): Promise<{ quoteId: string; expiry_at: number }> {
     try {
       const rates = this.fxRatesService.getFxRate('USD','JPY');
