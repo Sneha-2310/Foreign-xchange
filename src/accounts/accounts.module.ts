@@ -5,8 +5,8 @@ import { ThrottlerModule,ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports :[ThrottlerModule.forRoot([{
-    ttl: 6000,
-    limit: 5,
+    ttl: 3000,
+    limit: 2,
   }]),],
   controllers: [AccountsController],
   providers: [AccountsService,{

@@ -14,8 +14,12 @@ export class FxConversionController {
     @Body() body: { quoteId: string; fromCurrency: string; toCurrency: string; amount: number },
   ): Promise<{ convertedAmount: number; currency: string }> {
     const { quoteId, fromCurrency, toCurrency, amount } = body;
-    
-    // FX conversion using rates from the service
+
+    const isValidQuote = this.fxRatesService.validateQuoteId(quoteId);
+    if (!isValidQuote) {
+      throw new Error('Invalid / expired quoteId');
+    }
+   
     const convertedAmount = await this.fxRatesService.convertAmount(fromCurrency, toCurrency, amount);
 
     return { convertedAmount, currency: toCurrency };

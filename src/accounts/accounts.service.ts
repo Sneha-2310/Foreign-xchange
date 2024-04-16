@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AccountsService {
-  private balances: Record<string, number> = { USD: 0, EUR: 0, GBP: 0 };
+  private balances: Record<string, number> = { };
 
   async topUpAccount(currency: string, amount: number): Promise<void> {
     if (this.balances[currency]) {
