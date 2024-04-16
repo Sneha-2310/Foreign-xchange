@@ -9,12 +9,16 @@ import {UserModule} from './user/user.module';
 import { AppController } from './app.controller';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal:true,
+    }),
     ThrottlerModule.forRoot([{
-      ttl: 3000,
-      limit: 2,
+      ttl: 1000,
+      limit: 5,
     }]),
     ScheduleModule.forRoot(),
     HttpModule, 

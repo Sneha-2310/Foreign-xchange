@@ -6,8 +6,8 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports:[ThrottlerModule.forRoot([{
-    ttl: 3000,
-    limit: 2,
+    ttl: 1000,
+    limit: 5,
   }])],
   controllers: [FxRatesController],
   providers: [FxRatesService,{

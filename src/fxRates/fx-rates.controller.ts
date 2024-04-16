@@ -11,7 +11,7 @@ export class FxRatesController {
   async getFxRates(): Promise<{ quoteId: string; expiry_at: number }> {
     try {
       const rates = this.fxRatesService.getFxRate('USD','JPY');
-      //console.log(rates);
+      
       const quoteId = Math.random().toString(36).substring(7);
       const expiryAt = Math.floor(Date.now() / 1000) + 300; 
 

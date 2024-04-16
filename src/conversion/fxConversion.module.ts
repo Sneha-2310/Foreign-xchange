@@ -9,8 +9,8 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports:[HttpModule,
     ThrottlerModule.forRoot([{
-      ttl: 3000,
-      limit: 2,
+      ttl: 1000,
+      limit: 5,
     }]),
   ],
   controllers: [FxConversionController],
