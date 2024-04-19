@@ -12,8 +12,9 @@ export class FxRatesService {
   @Cron(CronExpression.EVERY_30_SECONDS,)
   async fetchFxRates(one: string, two: string): Promise<void> {
     try {
-      one='USD';
-      two='JPY';
+
+      one=one||'USD';
+      two=two||'JPY';
       
       const url = `${this.apiUrl}/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${one}&to_currency=${two}&apikey=${this.apiKey}`;
       const response = await axios.get(url);
