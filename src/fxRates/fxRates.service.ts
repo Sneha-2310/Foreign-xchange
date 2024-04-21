@@ -14,7 +14,7 @@ export class FxRatesService {
     try {
 
       one=one||'USD';
-      two=two||'JPY';
+      two=two||'EUR';
       
       const url = `${this.apiUrl}/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${one}&to_currency=${two}&apikey=${this.apiKey}`;
       const response = await axios.get(url);
@@ -56,6 +56,7 @@ export class FxRatesService {
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
     if (currentTimestamp > quote.expiryTimestamp) {
+      delete this.quotes[quoteId];
       return false;
     }
 
