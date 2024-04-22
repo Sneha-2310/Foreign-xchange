@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post,Body, UseGuards } from '@nestjs/common';
 import { FxRatesService } from '../fxRates/fxRates.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -6,11 +6,14 @@ import { AuthGuard } from '@nestjs/passport';
 export class FxRatesController {
   constructor(private readonly fxRatesService: FxRatesService) {}
  
-  @Get()
+  @Post()
   @UseGuards(AuthGuard("jwt"))
-  async getFxRates(): Promise<{ quoteId: string; expiry_at: number }> {
+  async getFxRates(@Body() body: { fromCurrency: string; toCurrency: string},): Promise<{ quoteId: string; expiry_at: number }> {
     try {
-      const rates = this.fxRatesService.getFxRate('USD','EUR');
+      const {fromCurrency, toCurrency } = body;
+      //console.log(fromCurrency,toCurrency);
+
+      const rates = this.fxRatesService.getFxRate(fromCurrency,toCurrency);
       
       const quoteId = Math.random().toString(36).substring(7);
       const expiryAt = Math.floor(Date.now() / 1000) + 300; 
@@ -23,4 +26,5 @@ export class FxRatesController {
       throw new Error('Failed to fetch FX rates');
     }
   }
+
 }

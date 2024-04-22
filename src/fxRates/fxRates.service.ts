@@ -4,7 +4,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class FxRatesService {
-  private fxRatesCache: Record<string, number> = {'USD_JPY':50};
+  private fxRatesCache: Record<string, number> = {'USD_JPY':50,'USD_EUR':100};
 //  private expiryDurationSeconds = 30;
   private readonly apiKey = process.env.API_KEY;
   private readonly apiUrl = 'https://www.alphavantage.co';
@@ -31,8 +31,13 @@ export class FxRatesService {
     }
   }
 
-  getFxRate(fromCurrency: string, toCurrency: string): number {
+   getFxRate(fromCurrency: string, toCurrency: string): number {
+   
+    this.fetchFxRates(fromCurrency,toCurrency);
     const key = `${fromCurrency}_${toCurrency}`;
+    // console.log( this.fxRatesCache);
+    //console.log(this.fxRatesCache[key] );
+
     return this.fxRatesCache[key] || 0; 
   }
 
