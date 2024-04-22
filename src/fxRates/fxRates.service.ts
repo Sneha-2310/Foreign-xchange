@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 @Injectable()
 export class FxRatesService {
+  constructor(private readonly accountService: AccountsService) {}
   private fxRatesCache: Record<string, number> = {'USD_JPY':50,'USD_EUR':100};
 //  private expiryDurationSeconds = 30;
   private readonly apiKey = process.env.API_KEY;
@@ -78,6 +80,7 @@ export class FxRatesService {
     }
 
   const convertedAmount = amount * exchangeRate;
+   this.accountService.func(fromCurrency,toCurrency,convertedAmount,amount);
   return parseFloat(convertedAmount.toFixed(2)); 
    
   }

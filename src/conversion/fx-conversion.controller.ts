@@ -3,10 +3,12 @@ import { FxRatesService } from '../fxRates/fxRates.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/user/role.guard';
 import { CONSTANTS } from 'src/user/const';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 @Controller('fx-conversion')
 export class FxConversionController {
   constructor(private readonly fxRatesService: FxRatesService) {}
+  
 
   @Post()
   @UseGuards(AuthGuard("jwt"),new RolesGuard(CONSTANTS.ROLES.USER))
@@ -21,6 +23,7 @@ export class FxConversionController {
     // }
    
     const convertedAmount = await this.fxRatesService.convertAmount(fromCurrency, toCurrency, amount);
+
 
     return { convertedAmount, currency: toCurrency };
   }

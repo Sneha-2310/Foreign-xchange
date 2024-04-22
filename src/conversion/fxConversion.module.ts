@@ -4,10 +4,11 @@ import {FxRatesService} from '../fxRates/fxRates.service';
 import { HttpModule } from '@nestjs/axios';
 import { ThrottlerModule,ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import{AccountsModule} from '../accounts/accounts.module';
 
 
 @Module({
-  imports:[HttpModule,
+  imports:[HttpModule,AccountsModule,
     ThrottlerModule.forRoot([{
       ttl: 1000,
       limit: 5,
