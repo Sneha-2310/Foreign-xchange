@@ -37,10 +37,11 @@ export class FxRatesService {
    
     this.fetchFxRates(fromCurrency,toCurrency);
     const key = `${fromCurrency}_${toCurrency}`;
-    // console.log( this.fxRatesCache);
-    //console.log(this.fxRatesCache[key] );
-
-    return this.fxRatesCache[key] || 0; 
+    console.log(this.fxRatesCache[key]);
+    
+    if(this.fxRatesCache[key]!==undefined){
+    return this.fxRatesCache[key]} 
+    else {throw new Error('Enter a valid currency');} 
   }
 
   private quotes: Record<string, { expiryTimestamp: number }> = {};
