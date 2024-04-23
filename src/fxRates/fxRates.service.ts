@@ -7,11 +7,10 @@ import { AccountsService } from 'src/accounts/accounts.service';
 export class FxRatesService {
   constructor(private readonly accountService: AccountsService) {}
   private fxRatesCache: Record<string, number> = { USD_JPY:13};
-//  private expiryDurationSeconds = 30;
   private readonly apiKey = process.env.API_KEY;
   private readonly apiUrl = 'https://www.alphavantage.co';
 
-  // @Cron(CronExpression.EVERY_30_SECONDS,)
+  @Cron(CronExpression.EVERY_30_SECONDS,)
   async fetchFxRates(one: string, two: string): Promise<void> {
     try {
 
@@ -21,7 +20,7 @@ export class FxRatesService {
       const url = `${this.apiUrl}/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${one}&to_currency=${two}&apikey=${this.apiKey}`;
       const response = await axios.get(url);
       const { data } = response;
-      console.log(data);
+    //  console.log(data);
 
       if (data['Realtime Currency Exchange Rate']) {
         const exchangeRate = parseFloat(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
