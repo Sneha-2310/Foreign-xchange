@@ -15,5 +15,6 @@ import { AccountsModule } from 'src/accounts/accounts.module';
     provide:APP_GUARD,
     useClass:ThrottlerGuard,
   }],
+  exports:[FxRatesService]
 })
 export class FxRatesModule {}

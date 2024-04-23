@@ -3,7 +3,6 @@ import { FxRatesService } from '../fxRates/fxRates.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/user/role.guard';
 import { CONSTANTS } from 'src/user/const';
-import { AccountsService } from 'src/accounts/accounts.service';
 
 @Controller('fx-conversion')
 export class FxConversionController {
@@ -18,9 +17,9 @@ export class FxConversionController {
     const { quoteId, fromCurrency, toCurrency, amount } = body;
 
     const isValidQuote = this.fxRatesService.validateQuoteId(quoteId);
-    // if (!isValidQuote) {
-    //   throw new Error('Invalid / expired quoteId');
-    // }
+    if (!isValidQuote) {
+      throw new Error('Invalid / expired quoteId');
+    }
    
     const convertedAmount = await this.fxRatesService.convertAmount(fromCurrency, toCurrency, amount);
 

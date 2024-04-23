@@ -5,17 +5,18 @@ import { HttpModule } from '@nestjs/axios';
 import { ThrottlerModule,ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import{AccountsModule} from '../accounts/accounts.module';
+import { FxRatesModule } from 'src/fxRates/fxRates.module';
 
 
 @Module({
-  imports:[HttpModule,AccountsModule,
+  imports:[HttpModule,AccountsModule,FxRatesModule,
     ThrottlerModule.forRoot([{
       ttl: 1000,
       limit: 5,
     }]),
   ],
   controllers: [FxConversionController],
-  providers: [FxRatesService,
+  providers: [
     {
       provide:APP_GUARD,
       useClass:ThrottlerGuard,

@@ -6,12 +6,12 @@ import { AccountsService } from 'src/accounts/accounts.service';
 @Injectable()
 export class FxRatesService {
   constructor(private readonly accountService: AccountsService) {}
-  private fxRatesCache: Record<string, number> = {'USD_JPY':50,'USD_EUR':100};
+  private fxRatesCache: Record<string, number> = { USD_JPY:13};
 //  private expiryDurationSeconds = 30;
   private readonly apiKey = process.env.API_KEY;
   private readonly apiUrl = 'https://www.alphavantage.co';
 
-  @Cron(CronExpression.EVERY_30_SECONDS,)
+  // @Cron(CronExpression.EVERY_30_SECONDS,)
   async fetchFxRates(one: string, two: string): Promise<void> {
     try {
 
@@ -33,23 +33,25 @@ export class FxRatesService {
     }
   }
 
-   getFxRate(fromCurrency: string, toCurrency: string): number {
+  //  getFxRate(fromCurrency: string, toCurrency: string): number {
    
-    this.fetchFxRates(fromCurrency,toCurrency);
-    const key = `${fromCurrency}_${toCurrency}`;
-    console.log(this.fxRatesCache[key]);
+  //   this.fetchFxRates(fromCurrency,toCurrency);
+  //   const key = `${fromCurrency}_${toCurrency}`;
+  //  // console.log(this.fxRatesCache[key]);
     
-    if(this.fxRatesCache[key]!==undefined){
-    return this.fxRatesCache[key]} 
-    else {throw new Error('Enter a valid currency');} 
-  }
+  //   if(this.fxRatesCache[key]!==undefined){
+  //   return this.fxRatesCache[key]} 
+  //   else {throw new Error('Enter a valid currency');} 
+  // }
 
-  private quotes: Record<string, { expiryTimestamp: number }> = {};
+  private quotes: Record<string, { expiry: number }> = {};
 
   storeQuoteId(quoteId: string, expirySeconds: number): void {
-    const expiryTimestamp = Math.floor(Date.now() / 1000) + expirySeconds*1000;
-    this.quotes[quoteId] = { expiryTimestamp };
+    console.log(Date.now());
+    const expiry = Math.floor(Date.now() / 1000) + expirySeconds;
+    this.quotes[quoteId] = { expiry };
     console.log(this.quotes);
+   // console.log(this.fxRatesCache);
   }
 
   validateQuoteId(quoteId: string): boolean {
@@ -57,13 +59,13 @@ export class FxRatesService {
     console.log(this.quotes);
     if (!quote) {
       // QuoteId not found
-      console.log("first");
+      console.log("Quote not found");
       return false;
     }
-
+    console.log(Date.now());
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
-    if (currentTimestamp > quote.expiryTimestamp) {
+    if (currentTimestamp > quote.expiry) {
       delete this.quotes[quoteId];
       return false;
     }
@@ -72,9 +74,10 @@ export class FxRatesService {
     return true;
   }
 
-  async convertAmount(fromCurrency: string, toCurrency: string, amount: number): Promise<number> {
+   convertAmount(fromCurrency: string, toCurrency: string, amount: number): number {
+  
     const exchangeRate = this.fxRatesCache[`${fromCurrency}_${toCurrency}`]
-    // await this.getFxRate(fromCurrency, toCurrency);
+    //console.log(this.fxRatesCache);
 
     if (!exchangeRate) {
       throw new Error(`Exchange rate not available for ${fromCurrency} to ${toCurrency}`);

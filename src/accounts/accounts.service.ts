@@ -3,7 +3,7 @@ import { error } from 'console';
 
 @Injectable()
 export class AccountsService {
-  private balances: Record<string, number> = { };
+  private balances: Record<string, number> = {};
 
   async topUpAccount(currency: string, amount: number): Promise<void> {
     if (this.balances[currency]) {
